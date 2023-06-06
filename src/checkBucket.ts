@@ -13,9 +13,9 @@ async function checkBucket (s3: S3, bucket:string) {
     return { success: true, message: "Bucket already Exist",data: {}};
   } catch (error) {
 
-    console.log("Error bucket don't exsit", error);
+    console.log("Error bucket don't exist", error);
 
-    return { success: false, message: "Error bucket don't exsit",data: error };
+    return { success: false, message: "Error bucket don't exist",data: error };
   }
 };
 
