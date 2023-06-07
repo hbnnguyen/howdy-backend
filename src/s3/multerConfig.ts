@@ -18,3 +18,10 @@ export const multerConfig = {
     cb(null, true);
   }
 }
+
+//TODO: REFACTOR
+// MemoryStorage
+// The memory storage engine stores the files in memory as Buffer objects. It doesn’t have any options.
+
+// const storage = multer.memoryStorage()
+// const upload = multer({ storage: storage })
