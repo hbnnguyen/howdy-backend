@@ -7,18 +7,32 @@ import { UploadController } from '../s3/bucketController';
 
 const router = express.Router();
 
-//TODO: r u sure???
+//upload fike to s3
 const upload = multer({ dest: 'uploads/' });
 // const upload = multer(multerConfig.fileFilter);
 
 router.post("/upload", upload.single('uploaded_file'), UploadController.Upload);
 
-router.get("/", function (req, res) {
-  return res.json({ veryCoolGreeting: "yo yo yo" });
+//get all users
+router.get("/", async function (req, res) {
+  const allUsers = await prisma.user.findMany()
+  return res.json(allUsers);
 });
 
-router.post("/", function (req, res) {
-  return res.json({ veryCoolGreeting: "yo yo yo" });
+//create user
+router.post("/", async function (req, res) {
+  const newUser = await prisma.user.create({
+    data: req.body
+  })
+  return res.json(newUser);
 });
+
+//update user
+// router.patch("/", async function (req, res) {
+//   const newUser = await prisma.user.create({
+//     data: req.body
+//   })
+//   return res.json(newUser);
+// });
 
 export { router as userRoutes };
