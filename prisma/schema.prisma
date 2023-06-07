@@ -13,10 +13,10 @@ generator client {
 model User {
   id           Int           @id @default(autoincrement())
   email        String        @unique
-  password     String
-  firstName    String
-  lastName     String
-  zipCode      String
+  password     String        @default("")
+  firstName    String        @default("")
+  lastName     String        @default("")
+  zipCode      String        @default("")
   bio          String?       @default("")
   hobbies      String?       @default("")
   interests    String?       @default("")
