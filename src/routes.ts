@@ -1,8 +1,8 @@
 import express from 'express';
 import multer from 'multer';
 
-import { UploadController } from './bucketController';
-import { multerConfig } from './multerConfig';
+import { UploadController } from './s3/bucketController';
+// import { multerConfig } from './multerConfig';
 
 const router = express.Router();
 

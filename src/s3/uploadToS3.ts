@@ -1,6 +1,6 @@
 import { S3 } from "aws-sdk";
 import fs from 'fs';
-import config from "./config";
+import config from "../config";
 
 /**
   * @name uploadToS3

@@ -1,8 +1,7 @@
-import { initBucket } from "./bucketService";
 import { S3 } from 'aws-sdk';
 import { Request } from "express";
 import uploadToS3 from "./uploadToS3";
-import config from "./config";
+import config from "../config";
 
 //FIXME: read the code?
 
@@ -13,9 +12,6 @@ export class UploadController {
         accessKeyId: config.aws_access_key_id,
         secretAccessKey: config.aws_secret_access_key,
     });
-
-    // Initialize bucket
-    await initBucket(s3);
 
     // get file data through req.file thank to multer
     console.log("file stobject", req.file);
