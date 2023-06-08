@@ -9,7 +9,7 @@ const router = express.Router();
 //upload fike to s3
 const upload = multer({ dest: 'uploads/' });
 
-router.post("/upload", ensureLoggedIn, upload.single('uploaded_file'), UploadController.Upload);
+router.post("/uploadProfilePic", ensureLoggedIn, upload.single('uploaded_file'), UploadController.Upload);
 
 //get all users
 router.get("/", async function (req, res) {

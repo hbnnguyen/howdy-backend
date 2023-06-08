@@ -1,4 +1,4 @@
-import express, { NextFunction, Request, Response } from "express";
+import express, { ErrorRequestHandler, NextFunction, Request, Response, response } from "express";
 import cors from "cors";
 
 import { userRoutes } from "./routes/users";
@@ -23,11 +23,12 @@ app.use("/users", userRoutes);
 app.use("/auth", authRoutes);
 app.use("/likeDislike", likeDislikeRoutes);
 
-app.get("*", (req, res) => {
-  throw new NotFoundError();
+app.get("*", (req, res, next) => {
+  return next(new NotFoundError());
 });
 
 //FIXME: fix error handling ???
+
 
 /** Generic error handler; anything unhandled goes here. */
 app.use(function (
@@ -45,6 +46,6 @@ app.use(function (
     error: { message, status },
   });
 
-});
+} as ErrorRequestHandler);
 
 export { app };

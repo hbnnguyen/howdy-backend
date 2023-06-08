@@ -10,7 +10,7 @@ import { prisma } from '../app';
 
 import userAuthSchema from '../schemas/userAuth.json';
 import userRegisterSchema from '../schemas/userRegister.json';
-import { BadRequestError } from "../expressError";
+import { BadRequestError, UnauthorizedError } from "../expressError";
 import { createToken } from "../helpers/tokens";
 import bcrypt from "bcrypt";
 import config from "../config";
@@ -34,11 +34,21 @@ router.post("/token", async function (req, res, next) {
 
   if (!validator.valid) {
     const errs = validator.errors.map(e => e.stack);
-    throw new BadRequestError(errs.toString());
+    return next(new BadRequestError(errs.toString()));
   }
 
   const { email, password } = req.body;
-  const user = await authenticateUser(email, password);
+  let user;
+  try {
+    user = await authenticateUser(email, password);
+  } catch (err) {
+    return next(new UnauthorizedError());
+  }
+
+  if (!user) {
+    return next(new UnauthorizedError());
+  }
+
   const token = createToken(user.email);
 
   return res.json({ token });
@@ -62,7 +72,7 @@ router.post("/register", async function (req, res, next) {
   );
   if (!validator.valid) {
     const errs = validator.errors.map(e => e.stack);
-    throw new BadRequestError(errs.toString());
+    return next(new BadRequestError(errs.toString()));
   }
 
   //FIXME: duplicate check for email

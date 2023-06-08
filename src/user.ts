@@ -6,16 +6,10 @@ import { UnauthorizedError, NotFoundError } from "./expressError";
 export async function authenticateUser(email: string, password: string) {
   let user;
 
-  try {
-    console.log("user email", email)
-    user = await prisma.user.findUniqueOrThrow({
-      where: { email: email }
-    });
-
-  } catch (err) {
-    throw new NotFoundError()
-  }
-
+  console.log("user email", email);
+  user = await prisma.user.findUniqueOrThrow({
+    where: { email: email }
+  });
 
   if (user !== null) {
     // compare hashed password to a new hash from password
@@ -26,7 +20,7 @@ export async function authenticateUser(email: string, password: string) {
     }
   }
 
-  throw new UnauthorizedError("Invalid username/password");
+  return null;
 }
 
 export interface UserOutput {
