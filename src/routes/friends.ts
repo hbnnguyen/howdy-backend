@@ -6,16 +6,13 @@ import { userToUserOutput } from '../user';
 
 const router = express.Router();
 
-router.get("/nextPotential", ensureLoggedIn, async function (req, res, next) {
-    const user = await prisma.user.findUnique({
-        where: {
-            id: Number(res.locals.user.id)
-        }
-    });
+//gets all friends
+router.get("/", ensureLoggedIn, async function (req, res, next) {
 
-    if (!user) {
-        return next(new NotFoundError());
-    }
+})
+
+router.get("/nextPotential", ensureLoggedIn, async function (req, res, next) {
+    const userId = res.locals.user.id
 
     //FIXME: make this disaster more efficient
 
@@ -28,11 +25,13 @@ router.get("/nextPotential", ensureLoggedIn, async function (req, res, next) {
 
     //TODO: make one query?
 
-    users.filter(async (otherUser) => {
+
+
+    const newusers = users.filter(async (otherUser) => {
         const likesDislikesOther = await prisma.likeDislike.findUnique({
             where: {
                 fromUserId_toUserId: {
-                    fromUserId: user.id,
+                    fromUserId: userId,
                     toUserId: otherUser.id
                 }
             }
@@ -42,7 +41,7 @@ router.get("/nextPotential", ensureLoggedIn, async function (req, res, next) {
             where: {
                 fromUserId_toUserId: {
                     fromUserId: otherUser.id,
-                    toUserId: user.id,
+                    toUserId: userId,
                 }
             }
         }));
@@ -52,9 +51,11 @@ router.get("/nextPotential", ensureLoggedIn, async function (req, res, next) {
         if (likesDislikesOther || !disliked) {
             return false;
         }
+
+        return true
     });
 
-    const potential = users.length === 0 ? userToUserOutput(users[0]) : null;
+    const potential = newusers.length !== 0 ? userToUserOutput(newusers[0]) : null;
 
     return res.json({ user: potential });
 });

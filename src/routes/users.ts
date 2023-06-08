@@ -13,11 +13,11 @@ const upload = multer({ dest: 'uploads/' });
 
 router.post("/uploadProfilePic", ensureLoggedIn, upload.single('uploaded_file'), UploadController.Upload);
 
-//get all users
-// router.get("/", async function (req, res) {
-//   const allUsers = await prisma.user.findMany();
-//   return res.json(allUsers);
-// });
+// get all users
+router.get("/", async function (req, res) {
+  const allUsers = await prisma.user.findMany();
+  return res.json(allUsers);
+});
 
 router.get("/:id", ensureCorrectUser, async function (req, res, next) {
   console.log("USERS/GET ONE BY ID!");
