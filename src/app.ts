@@ -32,7 +32,7 @@ app.use(function (
   res: Response,
   next: NextFunction
 ) {
-
+  console.log("shagua")
   if (process.env.NODE_ENV !== "test") console.error(err.stack);
   const status = err.status || 500;
   const message = err.message;

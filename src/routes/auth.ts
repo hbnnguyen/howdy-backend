@@ -3,10 +3,10 @@
 import jsonschema from "jsonschema";
 
 import express from 'express';
-import multer from 'multer';
+// import multer from 'multer';
 import { prisma } from '../app';
 
-import { UploadController } from '../s3/bucketController';
+// import { UploadController } from '../s3/bucketController';
 
 import userAuthSchema from '../schemas/userAuth.json';
 import userRegisterSchema from '../schemas/userRegister.json';
@@ -14,6 +14,7 @@ import { BadRequestError } from "../expressError";
 import { createToken } from "../helpers/tokens";
 import bcrypt from "bcrypt";
 import config from "../config";
+import { authenticateUser } from "../user";
 
 const router = express.Router();
 
@@ -30,17 +31,16 @@ router.post("/token", async function (req, res, next) {
     userAuthSchema,
     { required: true }
   );
+
   if (!validator.valid) {
     const errs = validator.errors.map(e => e.stack);
     throw new BadRequestError(errs.toString());
   }
 
-  const { username, password } = req.body;
-  const user = await User.authenticate(username, password);
+  const { email, password } = req.body;
+  const user = await authenticateUser(email, password);
+  const token = createToken(user.email);
 
-  
-
-  const token = createToken(user);
   return res.json({ token });
 });
 
