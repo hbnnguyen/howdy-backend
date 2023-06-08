@@ -2,6 +2,7 @@ import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 
 import { userRoutes } from "./routes/users";
+import { authRoutes } from "./routes/auth";
 import { ExpressError, NotFoundError } from "./expressError";
 import { PrismaClient } from "@prisma/client";
 
@@ -16,10 +17,13 @@ app.use(express.urlencoded({ limit: '50000mb', extended: false }));
 // user route for all path
 
 app.use("/users", userRoutes);
+app.use("/auth", authRoutes);
 
 app.get("*", (req, res) => {
   throw new NotFoundError();
 });
+
+//FIXME: fix error handling ???
 
 /** Generic error handler; anything unhandled goes here. */
 app.use(function (

@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://example.com/userRegister.json",
+  "type": "object",
+  "properties": {
+      "email": {
+          "type": "string",
+          "maxLength": 60,
+          "format": "email"
+      },
+      "password": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 20
+      },
+      "firstName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 30
+      },
+      "lastName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 30
+      },
+      "zipCode": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 5
+      },
+      "bio": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+      },
+      "hobbies": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+      },
+      "interests": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+      },
+      "friendRadius": {
+          "type": "integer"
+      }
+  },
+  "additionalProperties": false,
+  "required": [
+      "email",
+      "password",
+      "firstName",
+      "lastName",
+      "zipCode",
+      "bio",
+      "hobbies",
+      "interests",
+      "friendRadius"
+  ]
+}
