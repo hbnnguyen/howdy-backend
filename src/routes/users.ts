@@ -2,14 +2,14 @@ import express from 'express';
 import multer from 'multer';
 import { prisma } from '../app';
 import { UploadController } from '../s3/bucketController';
-import { ensureCorrectUser } from '../middleware/auth';
+import { ensureCorrectUser, ensureLoggedIn } from '../middleware/auth';
 
 const router = express.Router();
 
 //upload fike to s3
 const upload = multer({ dest: 'uploads/' });
 
-router.post("/upload", ensureCorrectUser, upload.single('uploaded_file'), UploadController.Upload);
+router.post("/upload", ensureLoggedIn, upload.single('uploaded_file'), UploadController.Upload);
 
 //get all users
 router.get("/", async function (req, res) {

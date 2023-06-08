@@ -6,6 +6,7 @@ import { authRoutes } from "./routes/auth";
 import { likeDislikeRoutes } from "./routes/likedislike";
 import { ExpressError, NotFoundError } from "./expressError";
 import { PrismaClient } from "@prisma/client";
+import { authenticateJWT } from "./middleware/auth";
 
 export const prisma = new PrismaClient();
 
@@ -13,6 +14,7 @@ const app = express();
 
 app.use(cors()); // Enable all cors requests for all routes
 app.use(express.json());
+app.use(authenticateJWT);
 
 app.use(express.urlencoded({ limit: '50000mb', extended: false }));
 // user route for all path
