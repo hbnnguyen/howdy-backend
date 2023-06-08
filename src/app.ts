@@ -1,10 +1,11 @@
-import express, { NextFunction, Request, Response } from "express";
+import express, { NextFunction, Request, Response, response } from "express";
 import cors from "cors";
 
 import { userRoutes } from "./routes/users";
 import { authRoutes } from "./routes/auth";
 import { ExpressError, NotFoundError } from "./expressError";
 import { PrismaClient } from "@prisma/client";
+import { ErrorRequestHandler } from "express";
 
 export const prisma = new PrismaClient();
 
@@ -19,11 +20,12 @@ app.use(express.urlencoded({ limit: '50000mb', extended: false }));
 app.use("/users", userRoutes);
 app.use("/auth", authRoutes);
 
-app.get("*", (req, res) => {
-  throw new NotFoundError();
+app.get("*", (req, res, next) => {
+  return next(new NotFoundError());
 });
 
 //FIXME: fix error handling ???
+
 
 /** Generic error handler; anything unhandled goes here. */
 app.use(function (
@@ -41,6 +43,6 @@ app.use(function (
     error: { message, status },
   });
 
-});
+} as ErrorRequestHandler);
 
 export { app };
