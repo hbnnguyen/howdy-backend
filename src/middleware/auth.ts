@@ -11,7 +11,7 @@ import { NextFunction, Request, Response } from "express";
 /** Middleware: Authenticate user.
  *
  * If a token was provided, verify it, and, if valid, store the token payload
- * on res.locals (this will include the username and isAdmin field.)
+ * on res.locals (this will include the email field.)
  *
  * It's not an error if no token was provided or if the token is not valid.
  */
@@ -37,12 +37,12 @@ export function authenticateJWT(req: Request, res: Response, next: NextFunction)
  */
 
 export function ensureLoggedIn(req: Request, res: Response, next: NextFunction) {
-  if (res.locals.user?.username) return next();
+  if (res.locals.user?.email) return next();
   return next(new UnauthorizedError());
 }
 
 /** Middleware to use when they must provide a valid token & be user matching
- *  username provided as route param.
+ *  email provided as route param.
  *
  *  If not, raises Unauthorized.
  */

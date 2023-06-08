@@ -1,4 +1,4 @@
-import express, { NextFunction, Request, Response, response } from "express";
+import express, { ErrorRequestHandler, NextFunction, Request, Response, response } from "express";
 import cors from "cors";
 
 import { userRoutes } from "./routes/users";
