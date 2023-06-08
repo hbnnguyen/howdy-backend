@@ -49,7 +49,7 @@ router.post("/token", async function (req, res, next) {
     return next(new UnauthorizedError());
   }
 
-  const token = createToken(user.email);
+  const token = createToken(user);
 
   return res.json({ token });
 });
@@ -57,7 +57,7 @@ router.post("/token", async function (req, res, next) {
 
 /** POST /auth/register:   { user } => { token }
  *
- * user must include { username, password, firstName, lastName, email }
+ * must match the user registration schema
  *
  * Returns JWT token which can be used to authenticate further requests.
  *
@@ -75,7 +75,7 @@ router.post("/register", async function (req, res, next) {
     return next(new BadRequestError(errs.toString()));
   }
 
-  //FIXME: duplicate check for email
+  //FIXME: duplicate check for id
   //FIXME: move to separate file
   const hashedPassword = await bcrypt.hash(req.body.password, config.BCRYPT_WORK_FACTOR);
 
@@ -85,7 +85,7 @@ router.post("/register", async function (req, res, next) {
   const newUser = await prisma.user.create({
     data
   });
-  const token = createToken(data.email);
+  const token = createToken(newUser);
   return res.status(201).json({ token });
 });
 

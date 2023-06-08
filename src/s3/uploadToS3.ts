@@ -12,7 +12,7 @@ import { userInfo } from "os";
   * @param {File} fileData
   * @returns {Promise<{success:boolean; message: string; data: object;}>}
 */
-async function uploadToS3(s3: S3, email: string, fileData?: Express.Multer.File) {
+async function uploadToS3(s3: S3, id: number, fileData?: Express.Multer.File) {
   try {
     const fileContent = fs.readFileSync(fileData!.path);
 
@@ -24,7 +24,6 @@ async function uploadToS3(s3: S3, email: string, fileData?: Express.Multer.File)
 
     const fileKey = uuid() + extension;
 
-    //TODO: make key a UUID
     const params = {
       Bucket: config.bucket_name,
       Key: fileKey,
@@ -46,7 +45,7 @@ async function uploadToS3(s3: S3, email: string, fileData?: Express.Multer.File)
 
       await prisma.user.update({
         where: {
-          email
+          id
         },
         data: {
           imageKey: fileKey

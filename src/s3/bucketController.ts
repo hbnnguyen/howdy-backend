@@ -14,7 +14,7 @@ export class UploadController {
         // get file data through req.file thank to multer
         console.log("file stobject", req.file);
 
-        const uplaodRes = await uploadToS3(s3, res.locals.user.email, req.file);
+        const uplaodRes = await uploadToS3(s3, res.locals.user.id, req.file);
 
         if (uplaodRes.success) {
             res.status(200).json(uplaodRes);
