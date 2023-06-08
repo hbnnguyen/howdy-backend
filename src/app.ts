@@ -3,6 +3,7 @@ import cors from "cors";
 
 import { userRoutes } from "./routes/users";
 import { authRoutes } from "./routes/auth";
+import { friendRoutes } from "./routes/friends";
 import { likeDislikeRoutes } from "./routes/likedislike";
 import { ExpressError, NotFoundError } from "./expressError";
 import { PrismaClient } from "@prisma/client";
@@ -22,6 +23,7 @@ app.use(express.urlencoded({ limit: '50000mb', extended: false }));
 app.use("/users", userRoutes);
 app.use("/auth", authRoutes);
 app.use("/likeDislike", likeDislikeRoutes);
+app.use("/friends", friendRoutes);
 
 app.get("*", (req, res, next) => {
   return next(new NotFoundError());

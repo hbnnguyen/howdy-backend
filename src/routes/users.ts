@@ -52,4 +52,6 @@ router.get("/:id", ensureCorrectUser, async function (req, res, next) {
 //   return res.json(newUser);
 // });
 
+
+
 export { router as userRoutes };
