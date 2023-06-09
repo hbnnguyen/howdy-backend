@@ -1,5 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 import axios from "axios";
+import bcrypt from "bcrypt";
+import config from "../src/config";
+
 
 const HIPSUM_URL = "http://hipsum.co/api/?type=hipster-centric&sentences=1";
 
@@ -56,11 +59,12 @@ const people = [
 const prisma = new PrismaClient();
 async function main() {
 
+  const hashedPassword = await bcrypt.hash("password", config.BCRYPT_WORK_FACTOR);
   const userPromises = people.map(async (person) => {
     return <User>
       {
         email: `${person.first}${person.last}@example.com`,
-        password: "password",
+        password: hashedPassword,
         firstName: person.first,
         lastName: person.last,
         zipCode: "94111",
