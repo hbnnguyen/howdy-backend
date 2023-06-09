@@ -68,8 +68,6 @@ router.get("/nextPotential", ensureLoggedIn, async function (req, res, next) {
         }
     });
 
-
-
     //TODO: make one query?
 
     const newUsers = await asyncFilter(users, async (otherUser) => {
@@ -99,9 +97,7 @@ router.get("/nextPotential", ensureLoggedIn, async function (req, res, next) {
         return true;
     });
 
-    console.log("newUsers", newUsers);
     const potential = newUsers.length !== 0 ? await userToUserOutput(newUsers[0]) : null;
-    console.log("pot",potential);
     return res.json({ user: potential });
 });
 
