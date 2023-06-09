@@ -1,6 +1,9 @@
 {
   "name": "friendly",
   "version": "1.0.0",
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "description": "make friends with friendly",
   "main": "build/index",
   "scripts": {

@@ -1,3 +1,4 @@
+import { PrismaClient } from '@prisma/client';
 import axios from "axios";
 
 const HIPSUM_URL = "http://hipsum.co/api/?type=hipster-centric&sentences=1";
@@ -7,8 +8,8 @@ function getFriendRadius() {
 }
 
 async function getHipSum() {
-  const hipsum: string = await axios.get(HIPSUM_URL);
-  return hipsum;
+  const hipsum = await axios.get(HIPSUM_URL);
+  return hipsum.data[0];
 }
 
 export interface User {
@@ -17,10 +18,11 @@ export interface User {
   firstName: string,
   lastName: string,
   zipCode: string,
-  bio: string | null,
-  hobbies: string | null,
-  interests: string | null,
-  friendRadius: number | null;
+  bio: string,
+  hobbies: string,
+  interests: string,
+  friendRadius: number,
+  imageKey: string,
 }
 
 const people = [
@@ -50,19 +52,40 @@ const people = [
   { first: "Steven", last: "Zheng" },
 ];
 
-const users = people.map(async (person) => {
-  return <User>
-    {
-      email: `${person.first}${person.last}@example.com`,
-      password: "password",
-      firstName: person.first,
-      lastName: person.last,
-      zipCode: "94111",
-      bio: await getHipSum(),
-      hobbies: await getHipSum(),
-      interests: await getHipSum(),
-      friendRadius: getFriendRadius()
-    };
-});
 
-console.log(users);
+const prisma = new PrismaClient();
+async function main() {
+
+  const userPromises = people.map(async (person) => {
+    return <User>
+      {
+        email: `${person.first}${person.last}@example.com`,
+        password: "password",
+        firstName: person.first,
+        lastName: person.last,
+        zipCode: "94111",
+        bio: await getHipSum(),
+        hobbies: await getHipSum(),
+        interests: await getHipSum(),
+        friendRadius: getFriendRadius(),
+        imageKey: "d9bc889a-3d46-4a36-8fe7-258274941166.jpg"
+      };
+  });
+
+  const users = await Promise.all(userPromises);
+
+  // console.log(users[0]);
+
+  // prisma.user.create({ data: users[0] });
+
+  await prisma.user.createMany({ data: users });
+}
+
+main()
+  .catch(error => {
+    console.error(error)
+    process.exit(1)
+  })
+  .finally(async () => {
+    await prisma.$disconnect()
+  })
