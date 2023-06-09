@@ -8,20 +8,41 @@ const router = express.Router();
 router.post("/", ensureLoggedIn, async function (req, res, next) {
   const { toUserId, liked } = req.body;
 
+  const userId = res.locals.user.id;
+
   let newLikeDislike;
   try {
     newLikeDislike = await prisma.likeDislike.create({
       data: {
-        fromUserId: res.locals.user.id,
+        fromUserId: userId,
         toUserId,
         liked
       }
     });
-  } catch(err) {
-    return next(new BadRequestError())
+  } catch (err) {
+    return next(new BadRequestError());
   }
 
-  return res.json({likeDislike: newLikeDislike})
+  const userLikes = await prisma.likeDislike.findMany({
+    where: {
+      OR: [
+        {
+          liked: true,
+          fromUserId: userId,
+          toUserId
+        },
+        {
+          liked: true,
+          fromUserId: toUserId,
+          toUserId: userId
+        }
+      ]
+    }
+  });
+
+  const becameFriends = userLikes.length === 2;
+
+  return res.json({ likeDislike: newLikeDislike, becameFriends });
 });
 
 export { router as likeDislikeRoutes };

@@ -56,7 +56,7 @@ router.get("/nextPotential", ensureLoggedIn, async function (req, res, next) {
 
     //FIXME: make this disaster more efficient
 
-    const users = await prisma.user.findMany({
+    const otherUsers = await prisma.user.findMany({
         where: {
             NOT: {
                 id: userId
@@ -70,7 +70,7 @@ router.get("/nextPotential", ensureLoggedIn, async function (req, res, next) {
 
     //TODO: make one query?
 
-    const newUsers = await asyncFilter(users, async (otherUser) => {
+    const newUsers = await asyncFilter(otherUsers, async (otherUser) => {
         const likesDislikesOther = await prisma.likeDislike.findUnique({
             where: {
                 fromUserId_toUserId: {
@@ -88,9 +88,9 @@ router.get("/nextPotential", ensureLoggedIn, async function (req, res, next) {
             }
         }));
 
-        const disliked = !likeDislikedByOther?.liked ?? false;
+        const otherDislikesMe = likeDislikedByOther != null && !likeDislikedByOther.liked;
 
-        if (likesDislikesOther || !disliked) {
+        if (likesDislikesOther != null || otherDislikesMe) {
             return false;
         }
 
