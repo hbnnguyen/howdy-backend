@@ -37,7 +37,6 @@ export function authenticateJWT(req: Request, res: Response, next: NextFunction)
  */
 
 export function ensureLoggedIn(req: Request, res: Response, next: NextFunction) {
-  console.log("user: ", res.locals.user);
   if (res.locals.user?.id) return next();
   return next(new UnauthorizedError());
 }
