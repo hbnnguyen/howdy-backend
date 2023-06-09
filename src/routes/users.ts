@@ -8,10 +8,10 @@ import { UserOutput, userToUserOutput } from '../user';
 
 const router = express.Router();
 
-//upload fike to s3
+//upload file to s3
 const upload = multer({ dest: 'uploads/' });
 
-router.post("/uploadProfilePic", ensureLoggedIn, upload.single('uploaded_file'), UploadController.Upload);
+router.post("/uploadProfilePic", ensureLoggedIn, upload.single('image'), UploadController.Upload);
 
 // get all users
 router.get("/", async function (req, res) {
@@ -32,7 +32,7 @@ router.get("/:id", ensureCorrectUser, async function (req, res, next) {
     return next(new NotFoundError());
   }
 
-  return res.json({ user: userToUserOutput(user) });
+  return res.json({ user: await userToUserOutput(user) });
   // return res.json({ user });
 });
 

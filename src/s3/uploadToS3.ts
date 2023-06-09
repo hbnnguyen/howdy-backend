@@ -5,6 +5,7 @@ import { v4 as uuid } from "uuid";
 import { prisma } from "../app";
 import { User } from "@prisma/client";
 import { userInfo } from "os";
+import { getUserPicture } from "../user";
 
 /**
   * @name uploadToS3
@@ -54,10 +55,12 @@ async function uploadToS3(s3: S3, id: number, fileData?: Express.Multer.File) {
 
       console.log("File Uploaded with Successful", res.Location);
 
+      const imageURL = await getUserPicture(id);
+
       return {
         success: true,
         message: "File Uploaded with Successful",
-        data: res.Location,
+        imageURL
       };
     } catch (error) {
       return { success: false, message: "Unable to Upload the file", data: error };

@@ -45,7 +45,10 @@ router.get("/", ensureLoggedIn, async function (req, res, next) {
     return (likesDislikesOther?.liked && likeDislikedByOther?.liked) || false;
   });
 
-  return res.json({ matches: matches.map(userToUserOutput) });
+  const promises = matches.map(userToUserOutput);
+  const matchesWithPics = await Promise.all(promises);
+
+  return res.json({ matches: matchesWithPics });
 });
 
 router.get("/nextPotential", ensureLoggedIn, async function (req, res, next) {
