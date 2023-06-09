@@ -9,7 +9,6 @@ import { UploadController } from "./s3/bucketController";
 export async function authenticateUser(email: string, password: string) {
   let user;
 
-  console.log("user email", email);
   user = await prisma.user.findUniqueOrThrow({
     where: { email: email }
   });

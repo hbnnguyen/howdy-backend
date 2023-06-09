@@ -29,30 +29,30 @@ export interface User {
 }
 
 const people = [
-  { first: "Tucker", last: "Diane" },
-  { first: "Brian", last: "Voter" },
-  { first: "Hannah", last: "Nguyen" },
-  { first: "Brian", last: "Aston" },
-  { first: "Sarah", last: "Stockton" },
-  { first: "Elie", last: "Shoppick" },
-  { first: "Kadeem", last: "Best" },
-  { first: "Kenneth", last: "Burgher" },
-  { first: "John", last: "Chong" },
-  { first: "Michael", last: "Herman" },
-  { first: "Russell", last: "Jones" },
-  { first: "Meeran", last: "Kim" },
-  { first: "Steven", last: "Lee" },
-  { first: "Ashley", last: "Lin" },
-  { first: "Dylan", last: "Lowes" },
-  { first: "Graham", last: "Macfarquhar" },
-  { first: "Cindy", last: "Pan" },
-  { first: "Ryan", last: "Park" },
-  { first: "Camran", last: "Rynowecer" },
-  { first: "Jakob", last: "Shavinski" },
-  { first: "Tanya", last: "Shylock" },
-  { first: "Jonathan", last: "Stern" },
-  { first: "Timothy", last: "Sukamtoh" },
-  { first: "Steven", last: "Zheng" },
+  { first: "Tucker", last: "D" },
+  { first: "Brian", last: "V" },
+  { first: "Hannah", last: "N" },
+  { first: "Brian", last: "A" },
+  { first: "Sarah", last: "S" },
+  { first: "Elie", last: "S" },
+  { first: "Kadeem", last: "B" },
+  { first: "Kenneth", last: "B" },
+  { first: "John", last: "C" },
+  { first: "Michael", last: "H" },
+  { first: "Russell", last: "J" },
+  { first: "Meeran", last: "K" },
+  { first: "Steven", last: "L" },
+  { first: "Ashley", last: "L" },
+  { first: "Dylan", last: "L" },
+  { first: "Graham", last: "M" },
+  { first: "Cindy", last: "P" },
+  { first: "Ryan", last: "P" },
+  { first: "Camran", last: "R" },
+  { first: "Jakob", last: "S" },
+  { first: "Tanya", last: "S" },
+  { first: "Jonathan", last: "S" },
+  { first: "Timothy", last: "S" },
+  { first: "Steven", last: "Z" },
 ];
 
 
@@ -63,7 +63,7 @@ async function main() {
   const userPromises = people.map(async (person) => {
     return <User>
       {
-        email: `${person.first}${person.last}@example.com`,
+        email: `${person.first.toLowerCase()}${person.last.toLowerCase()}@example.com`,
         password: hashedPassword,
         firstName: person.first,
         lastName: person.last,
@@ -72,7 +72,7 @@ async function main() {
         hobbies: await getHipSum(),
         interests: await getHipSum(),
         friendRadius: getFriendRadius(),
-        imageKey: "d9bc889a-3d46-4a36-8fe7-258274941166.jpg"
+        imageKey: "defaultProfilePic.jpg"
       };
   });
 
