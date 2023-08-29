@@ -51,10 +51,10 @@ export async function getSignedPictureByImageKey(imageKey: string): Promise<stri
 }
 
 
-export async function getUserPicture(userId: number): Promise<string> {
+export async function getUserPicture(userId: string): Promise<string> {
   const user = await prisma.user.findUnique({
     where: {
-      id: userId
+      username: userId
     }
   });
 
