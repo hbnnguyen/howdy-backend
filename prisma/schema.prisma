@@ -11,28 +11,24 @@ generator client {
 }
 
 model User {
-  id           Int           @id @default(autoincrement())
-  email        String        @unique
-  password     String        @default("")
-  firstName    String        @default("")
-  lastName     String        @default("")
-  zipCode      String        @default("")
-  bio          String        @default("")
-  hobbies      String        @default("")
-  interests    String        @default("")
-  friendRadius Int           @default(10)
-  createdAt    DateTime      @default(now()) @db.Timestamptz(3)
-  updatedAt    DateTime      @updatedAt @db.Timestamptz(3)
-  imageKey     String        @default("defaultProfilePic.jpg")
-  usersLiked   LikeDislike[] @relation("UsersLiked")
-  likedBy      LikeDislike[] @relation("LikedBy")
+  username   String        @id @unique
+  email      String        @unique
+  password   String        @default("")
+  name       String        @default("")
+  location   String        @default("")
+  bio        String        @default("")
+  createdAt  DateTime      @default(now()) @db.Timestamptz(3)
+  updatedAt  DateTime      @updatedAt @db.Timestamptz(3)
+  imageKey   String        @default("defaultProfilePic.jpg")
+  usersLiked LikeDislike[] @relation("UsersLiked")
+  likedBy    LikeDislike[] @relation("LikedBy")
 }
 
 model LikeDislike {
-  fromUser   User     @relation("UsersLiked", fields: [fromUserId], references: [id])
-  toUser     User     @relation("LikedBy", fields: [toUserId], references: [id])
-  fromUserId Int
-  toUserId   Int
+  fromUser   User     @relation("UsersLiked", fields: [fromUserId], references: [username])
+  toUser     User     @relation("LikedBy", fields: [toUserId], references: [username])
+  fromUserId String
+  toUserId   String
   timestamp  DateTime @default(now()) @db.Timestamptz(3)
   liked      Boolean
 

@@ -6,7 +6,7 @@ import { User } from "@prisma/client";
 
 export function createToken(user: User) {
   const payload = {
-    id: user.id
+    username: user.username
   };
 
   return jwt.sign(payload, config.SECRET_KEY);
