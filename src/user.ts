@@ -26,15 +26,10 @@ export async function authenticateUser(email: string, password: string) {
 
 export async function userToUserOutput(user: User): Promise<UserOutput> {
   return {
-    id: user.id,
+    username: user.username,
     email: user.email,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    zipCode: user.zipCode,
+    name: user.name,
     bio: user.bio,
-    hobbies: user.hobbies,
-    interests: user.interests,
-    friendRadius: user.friendRadius,
     imageKey: await getSignedPictureByImageKey(user.imageKey),
   };
 }
@@ -71,14 +66,9 @@ export async function getUserPicture(userId: number): Promise<string> {
 }
 
 export interface UserOutput {
-  id: number,
+  username: string,
   email: string,
-  firstName: string,
-  lastName: string,
-  zipCode: string,
+  name: string,
   bio: string,
-  hobbies: string,
-  interests: string,
-  friendRadius: number,
   imageKey: string,
 }
