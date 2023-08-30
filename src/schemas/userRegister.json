@@ -6,7 +6,7 @@
         "username": {
             "type": "string",
             "minLength": 1,
-            "maxLength": 60,
+            "maxLength": 60
         },
         "email": {
             "type": "string",
@@ -27,9 +27,6 @@
             "type": "string",
             "minLength": 1,
             "maxLength": 1000
-        },
-        "friendRadius": {
-            "type": "integer"
         }
     },
     "additionalProperties": false,
@@ -38,7 +35,6 @@
         "email",
         "password",
         "name",
-        "bio",
-        "friendRadius"
+        "bio"
     ]
 }

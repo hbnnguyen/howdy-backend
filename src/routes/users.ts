@@ -20,11 +20,11 @@ router.get("/", async function (req, res) {
 });
 
 router.get("/:id", ensureCorrectUser, async function (req, res, next) {
-  console.log("USERS/GET ONE BY ID!");
+  console.log("USERS/GET ONE BY id!");
 
   const user = await prisma.user.findUnique({
     where: {
-      username: String(req.params.username)
+      id: Number(req.params.id)
     }
   });
 

@@ -26,6 +26,7 @@ export async function authenticateUser(email: string, password: string) {
 
 export async function userToUserOutput(user: User): Promise<UserOutput> {
   return {
+    id: user.id,
     username: user.username,
     email: user.email,
     name: user.name,
@@ -51,10 +52,10 @@ export async function getSignedPictureByImageKey(imageKey: string): Promise<stri
 }
 
 
-export async function getUserPicture(userId: string): Promise<string> {
+export async function getUserPicture(userId: number): Promise<string> {
   const user = await prisma.user.findUnique({
     where: {
-      username: userId
+      id: userId
     }
   });
 
@@ -66,6 +67,7 @@ export async function getUserPicture(userId: string): Promise<string> {
 }
 
 export interface UserOutput {
+  id: number
   username: string,
   email: string,
   name: string,

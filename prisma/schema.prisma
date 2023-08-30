@@ -11,7 +11,8 @@ generator client {
 }
 
 model User {
-  username   String        @id @unique
+  id         Int           @id @unique @default(autoincrement())
+  username   String        @unique
   email      String        @unique
   password   String        @default("")
   name       String        @default("")
@@ -25,10 +26,10 @@ model User {
 }
 
 model LikeDislike {
-  fromUser   User     @relation("UsersLiked", fields: [fromUserId], references: [username])
-  toUser     User     @relation("LikedBy", fields: [toUserId], references: [username])
-  fromUserId String
-  toUserId   String
+  fromUser   User     @relation("UsersLiked", fields: [fromUserId], references: [id])
+  toUser     User     @relation("LikedBy", fields: [toUserId], references: [id])
+  fromUserId Int
+  toUserId   Int
   timestamp  DateTime @default(now()) @db.Timestamptz(3)
   liked      Boolean
 

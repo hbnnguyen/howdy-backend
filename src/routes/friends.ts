@@ -9,12 +9,12 @@ const router = express.Router();
 
 //gets all friends
 router.get("/", ensureLoggedIn, async function (req, res, next) {
-    const userId = res.locals.user.username;
+    const userId = res.locals.user.id;
 
     const users = await prisma.user.findMany({
         where: {
             NOT: {
-                username: userId
+                id: userId
             }
         },
         include: {
@@ -28,7 +28,7 @@ router.get("/", ensureLoggedIn, async function (req, res, next) {
             where: {
                 fromUserId_toUserId: {
                     fromUserId: userId,
-                    toUserId: otherUser.username
+                    toUserId: otherUser.id
                 }
             }
         });
@@ -36,7 +36,7 @@ router.get("/", ensureLoggedIn, async function (req, res, next) {
         const likeDislikedByOther = await prisma.likeDislike.findUnique({
             where: {
                 fromUserId_toUserId: {
-                    fromUserId: otherUser.username,
+                    fromUserId: otherUser.id,
                     toUserId: userId,
                 }
             }
@@ -52,14 +52,14 @@ router.get("/", ensureLoggedIn, async function (req, res, next) {
 });
 
 router.get("/nextPotential", ensureLoggedIn, async function (req, res, next) {
-    const userId = res.locals.user.username;
+    const userId = res.locals.user.id;
 
     //FIXME: make this disaster more efficient
 
     const otherUsers = await prisma.user.findMany({
         where: {
             NOT: {
-                username: userId
+                id: userId
             }
         },
         include: {
@@ -75,14 +75,14 @@ router.get("/nextPotential", ensureLoggedIn, async function (req, res, next) {
             where: {
                 fromUserId_toUserId: {
                     fromUserId: userId,
-                    toUserId: otherUser.username
+                    toUserId: otherUser.id
                 }
             }
         });
         const likeDislikedByOther = (await prisma.likeDislike.findUnique({
             where: {
                 fromUserId_toUserId: {
-                    fromUserId: otherUser.username,
+                    fromUserId: otherUser.id,
                     toUserId: userId,
                 }
             }
