@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import config from "../config";
 import { User } from "@prisma/client";
 
-/** return signed JWT {id, isAdmin} from user data. */
+/** return signed JWT {id} from user data. */
 
 export function createToken(user: User) {
   const payload = {

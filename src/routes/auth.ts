@@ -1,4 +1,5 @@
 /** Routes for authentication. */
+import 'express-async-errors';
 
 import jsonschema from "jsonschema";
 
@@ -10,7 +11,7 @@ import { prisma } from '../app';
 
 import userAuthSchema from '../schemas/userAuth.json';
 import userRegisterSchema from '../schemas/userRegister.json';
-import { BadRequestError, UnauthorizedError } from "../expressError";
+import { BadRequestError, UnauthorizedError, NotFoundError } from "../expressError";
 import { createToken } from "../helpers/tokens";
 import bcrypt from "bcrypt";
 import config from "../config";
@@ -87,6 +88,23 @@ router.post("/register", async function (req, res, next) {
   });
   const token = createToken(newUser);
   return res.status(201).json({ token });
+});
+
+router.get("/:username", async function (req, res, next) {
+  console.log("USERS/GET ONE BY username!");
+
+  const user = await prisma.user.findUnique({
+    where: {
+      username: String(req.params.username)
+    }
+  });
+
+  if (!user) {
+    return next(new NotFoundError());
+  }
+
+  return res.json({ username: user.username });
+  // return res.json({ user });
 });
 
 // router.post("/register", async function (req, res) {

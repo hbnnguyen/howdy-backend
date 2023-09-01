@@ -1,3 +1,5 @@
+import 'express-async-errors';
+
 import express from 'express';
 import multer from 'multer';
 import { prisma } from '../app';
@@ -35,6 +37,7 @@ router.get("/:id", ensureCorrectUser, async function (req, res, next) {
   return res.json({ user: await userToUserOutput(user) });
   // return res.json({ user });
 });
+
 
 //create user
 // router.post("/", async function (req, res) {

@@ -1,3 +1,4 @@
+import 'express-async-errors'
 import express, { ErrorRequestHandler, NextFunction, Request, Response, response } from "express";
 import cors from "cors";
 
@@ -30,8 +31,6 @@ app.get("*", (req, res, next) => {
 });
 
 //FIXME: fix error handling ???
-
-
 
 
 /** Generic error handler; anything unhandled goes here. */

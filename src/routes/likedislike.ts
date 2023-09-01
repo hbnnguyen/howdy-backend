@@ -1,3 +1,5 @@
+import 'express-async-errors';
+
 import express from 'express';
 import { prisma } from '../app';
 import { ensureLoggedIn } from '../middleware/auth';

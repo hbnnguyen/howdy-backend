@@ -35,3 +35,13 @@ model LikeDislike {
 
   @@id([fromUserId, toUserId])
 }
+
+// model Tag {
+//   tag    String  @id @unique
+//   type   TagType
+// }
+
+// enum TagType {
+//   hobby
+//   interest
+// }
