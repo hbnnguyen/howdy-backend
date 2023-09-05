@@ -23,6 +23,16 @@ model User {
   imageKey   String        @default("defaultProfilePic.jpg")
   usersLiked LikeDislike[] @relation("UsersLiked")
   likedBy    LikeDislike[] @relation("LikedBy")
+  chats      Chat[]        @relation("Chats")
+  messages   Message[]     @relation("Messages")
+}
+
+model UserEmail {
+  email String @id @unique
+}
+
+model Username {
+  username String @id @unique
 }
 
 model LikeDislike {
@@ -34,6 +44,24 @@ model LikeDislike {
   liked      Boolean
 
   @@id([fromUserId, toUserId])
+}
+
+model Chat {
+  id          Int       @id @unique @default(autoincrement())
+  users       User[]    @relation("Chats")
+  messages    Message[]
+  lastUpdated DateTime  @default(now()) @db.Timestamptz(3)
+}
+
+model Message {
+  author    User     @relation("Messages", fields: [authorId], references: [id])
+  authorId  Int
+  Chat      Chat     @relation(fields: [chatId], references: [id])
+  chatId    Int
+  contents  String
+  timestamp DateTime @default(now()) @db.Timestamptz(3)
+
+  @@id([chatId, authorId])
 }
 
 // model Tag {
