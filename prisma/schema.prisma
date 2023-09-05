@@ -55,8 +55,8 @@ model Chat {
 
 model Message {
   author    User     @relation("Messages", fields: [authorId], references: [id])
+  chat      Chat     @relation(fields: [chatId], references: [id])
   authorId  Int
-  Chat      Chat     @relation(fields: [chatId], references: [id])
   chatId    Int
   contents  String
   timestamp DateTime @default(now()) @db.Timestamptz(3)

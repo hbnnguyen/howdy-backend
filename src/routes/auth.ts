@@ -71,6 +71,7 @@ router.post("/register", async function (req, res, next) {
     userRegisterSchema,
     { required: true }
   );
+
   if (!validator.valid) {
     const errs = validator.errors.map(e => e.stack);
     return next(new BadRequestError(errs.toString()));
@@ -78,14 +79,30 @@ router.post("/register", async function (req, res, next) {
 
   //FIXME: duplicate check for id
   //FIXME: move to separate file
-  const hashedPassword = await bcrypt.hash(req.body.password, config.BCRYPT_WORK_FACTOR);
 
   const data = req.body;
+  const hashedPassword = await bcrypt.hash(req.body.password, config.BCRYPT_WORK_FACTOR);
   data.password = hashedPassword;
 
+  // adds new user to db
   const newUser = await prisma.user.create({
     data
   });
+
+  // adds email to separate table
+  await prisma.userEmail.create({
+    data: {
+      email: data.email
+    }
+  })
+
+  // adds username to separate table
+  await prisma.username.create({
+    data: {
+      username: data.username
+    }
+  })
+
   const token = createToken(newUser);
   return res.status(201).json({ token });
 });
