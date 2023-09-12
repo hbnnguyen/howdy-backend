@@ -10,7 +10,7 @@ import { asyncFilter } from '../helpers/asyncFilter';
 const router = express.Router();
 
 //get messages from chat id
-router.get("/:id", ensureCorrectUser, async function (req, res, next) {
+router.get("/:id", ensureLoggedIn, async function (req, res, next) {
   const chat = await prisma.chat.findUnique({
     where: {
       id: Number(req.params.id)
@@ -30,7 +30,7 @@ router.get("/:id", ensureCorrectUser, async function (req, res, next) {
 });
 
 //create message in specified chat
-router.post("/:id", ensureCorrectUser, async function (req, res, next) {
+router.post("/:id", ensureLoggedIn, async function (req, res, next) {
   const userId = res.locals.user.id;
 
   const message = await prisma.message.create({
