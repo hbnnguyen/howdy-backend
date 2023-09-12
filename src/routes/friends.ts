@@ -56,7 +56,7 @@ router.get("/", ensureLoggedIn, async function (req, res, next) {
 router.get("/nextPotential", ensureLoggedIn, async function (req, res, next) {
     const userId = res.locals.user.id;
 
-    //FIXME: make this disaster more efficient
+    //FIXME: make more efficient
 
     const otherUsers = await prisma.user.findMany({
         where: {

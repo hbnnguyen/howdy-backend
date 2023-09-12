@@ -41,7 +41,7 @@ async function main() {
         password: hashedPassword,
         name: person.name,
         bio: await getHipSum(),
-        imageKey: "defaultProfilePic.jpg"
+        imageKey: "defaultPfp.jpg"
       };
   });
 

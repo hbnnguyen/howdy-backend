@@ -6,6 +6,8 @@ import { userRoutes } from "./routes/users";
 import { authRoutes } from "./routes/auth";
 import { friendRoutes } from "./routes/friends";
 import { likeDislikeRoutes } from "./routes/likedislike";
+import { messageRoutes } from "./routes/messages";
+import { chatRoutes } from "./routes/chats";
 import { ExpressError, NotFoundError } from "./expressError";
 import { PrismaClient } from "@prisma/client";
 import { authenticateJWT } from "./middleware/auth";
@@ -25,6 +27,8 @@ app.use("/users", userRoutes);
 app.use("/auth", authRoutes);
 app.use("/likeDislike", likeDislikeRoutes);
 app.use("/friends", friendRoutes);
+app.use("/chats", chatRoutes);
+app.use("/messages", messageRoutes);
 
 app.get("*", (req, res, next) => {
   return next(new NotFoundError());

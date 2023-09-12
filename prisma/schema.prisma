@@ -20,11 +20,12 @@ model User {
   bio        String        @default("")
   createdAt  DateTime      @default(now()) @db.Timestamptz(3)
   updatedAt  DateTime      @updatedAt @db.Timestamptz(3)
-  imageKey   String        @default("defaultProfilePic.jpg")
+  imageKey   String        @default("defaultPfp.jpg")
   usersLiked LikeDislike[] @relation("UsersLiked")
   likedBy    LikeDislike[] @relation("LikedBy")
   chats      Chat[]        @relation("Chats")
-  messages   Message[]     @relation("Messages")
+  chatsTwo   Chat[]        @relation("ChatsTwo")
+  messages   Message[]     @relation("UserMessages")
 }
 
 model UserEmail {
@@ -47,15 +48,20 @@ model LikeDislike {
 }
 
 model Chat {
-  id          Int       @id @unique @default(autoincrement())
-  users       User[]    @relation("Chats")
-  messages    Message[]
+  id          Int       @unique @default(autoincrement())
+  userOne     User      @relation("Chats", fields: [userOneId], references: [id])
+  userTwo     User      @relation("ChatsTwo", fields: [userTwoId], references: [id])
+  userOneId   Int
+  userTwoId   Int
+  messages    Message[] @relation("ChatMessages")
   lastUpdated DateTime  @default(now()) @db.Timestamptz(3)
+
+  @@id([id, userOneId, userTwoId])
 }
 
 model Message {
-  author    User     @relation("Messages", fields: [authorId], references: [id])
-  chat      Chat     @relation(fields: [chatId], references: [id])
+  author    User     @relation("UserMessages", fields: [authorId], references: [id])
+  chat      Chat     @relation("ChatMessages", fields: [chatId], references: [id])
   authorId  Int
   chatId    Int
   contents  String
