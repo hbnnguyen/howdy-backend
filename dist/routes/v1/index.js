@@ -1,0 +1,17 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const users_route_1 = require("./users.route");
+const auth_route_1 = require("./auth.route");
+const friends_route_1 = require("./friends.route");
+const likedislike_route_1 = require("./likedislike.route");
+const messages_route_1 = require("./messages.route");
+const chats_route_1 = require("./chats.route");
+const router = (0, express_1.Router)();
+router.use("/users", users_route_1.userRoutes);
+router.use("/auth", auth_route_1.authRoutes);
+router.use("/likeDislike", likedislike_route_1.likeDislikeRoutes);
+router.use("/friends", friends_route_1.friendRoutes);
+router.use("/chats", chats_route_1.chatRoutes);
+router.use("/messages", messages_route_1.messageRoutes);
+exports.default = router;
