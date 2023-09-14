@@ -1,4 +1,4 @@
-service: nodejs-aws-lambda
+service: howdy-backend
 provider:
   name: aws
   runtime: nodejs18.x
